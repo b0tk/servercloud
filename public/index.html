@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Server</title>
+</head>
+<body>
+    <h1>Upload Files</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        Select files to upload:
+        <input type="file" name="files" multiple>
+        <input type="submit" value="Upload">
+    </form>
+    <h2>Available Folders</h2>
+    <ul id="folders-list"></ul>
+
+    <script>
+        fetch('/folders')
+            .then(response => response.json())
+            .then(data => {
+                const list = document.getElementById('folders-list');
+                data.folders.forEach(folder => {
+                    const listItem = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.href = `/download?folder=${folder}`;
+                    link.textContent = folder;
+                    listItem.appendChild(link);
+                    list.appendChild(listItem);
+                });
+            });
+    </script>
+</body>
+</html>
